@@ -12,26 +12,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Tải source code từ repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Cấu hình môi trường Java 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Thiết lập môi trường Java JDK 17
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
-      # 3. Cấp quyền thực thi cho Gradle wrapper (nếu có file gradlew trong repo)
       - name: Grant execute permission for gradlew
         run: |
           if [ -f "./gradlew" ]; then
             chmod +x ./gradlew
           fi
 
-      # 4. Bước CHECK CÚ PHÁP: Biên dịch mã nguồn để kiểm tra lỗi cú pháp và typing
       - name: Step 1 - Check syntax & Compile
         run: |
           if [ -f "./gradlew" ]; then
@@ -40,7 +36,6 @@ jobs:
             gradle compileJava
           fi
 
-      # 5. Bước TEST: Chạy toàn bộ các unit test / integration test
       - name: Step 2 - Run Unit Tests
         run: |
           if [ -f "./gradlew" ]; then
@@ -49,7 +44,6 @@ jobs:
             gradle test
           fi
 
-      # 6. Bước PACKAGE: Đóng gói ứng dụng thành file bootable .jar
       - name: Step 3 - Package Application (bootJar)
         run: |
           if [ -f "./gradlew" ]; then
@@ -58,7 +52,6 @@ jobs:
             gradle bootJar
           fi
 
-      # 7. Bước LƯU TRỮ ARTIFACT: Upload file .jar (trong build/libs) lên GitHub Actions
       - name: Step 4 - Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
