@@ -20,3 +20,5 @@ public class HelloController {
         return response;
     }
 }
+
+// Trigger push 2 to verify Gradle dependency cache restore
